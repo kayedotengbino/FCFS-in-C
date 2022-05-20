@@ -7,3 +7,5 @@ int WT();
 void displayWT();
 float AWT();
 float ATT();
+int fcfs(int data);
+int clear();

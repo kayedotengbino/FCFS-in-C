@@ -4,11 +4,11 @@
 int main() 
 {
 	int repeat, choice, element, multElement;
-	int x = 1;
+	int y = 0, orderChoice, ordered, x;
 	
 	do
 	{
-		printf("FCFS MENU\n[1] Burst Time\n[2] Display\n[3] Turn-around Time\n[4] Waiting Time\n[5] Average Waiting Time\n[6] Average Turn-around Time\n[7] Exit\nChoice: ");
+		printf("FCFS MENU\n[1] Burst Time\n[2] Order\n[3] Turn-around Time\n[4] Waiting Time\n[5] Average Waiting Time\n[6] Average Turn-around Time\n[7] Display\n[8]Exit\nChoice: ");
 		scanf("%d", &choice);
 		
 		system("cls");
@@ -24,23 +24,22 @@ int main()
                     {
                     	
                     	
-                        printf("Burst time for P%d: ", x);
+                        printf("Burst time for P%d: ", y+1);
                         scanf("%d", &element);
 					    enqueue(element);
-					    
 					    
 
                         printf("Add again? (1 = YES | 0 = NO): ");
 					    scanf("%d", &multElement);
 					    if(multElement == 1)
-					    	x++;
+					    	y++;
 					   
                     }
                     else
                     {
                         printf("Sorry, stack is already full");
                         multElement = 0;
-                        x = 1;
+                        y = 1;
                     }
 				}
 				while(multElement == 1);
@@ -49,7 +48,28 @@ int main()
             case 2:
 				system("cls");
 				display();
+				printf("\nDo you wish to have a desired order of the FCFS? (1 - yes | 0 - no): ");
+				scanf("%d", &orderChoice);
 				
+				if(orderChoice == 1)
+				{
+					printf("\nBase on the table above, input Process number with corresponding burst time.\n");
+					clear();
+					for(x = 0; x <= y; x++)
+					{
+						//Process number
+						printf("Process number: ");
+						scanf("%d", &ordered);
+						fcfs(ordered);
+						
+						//Corresponding burst time
+						printf("Burst Time: ");
+						scanf("%d", &element);
+						enqueue(element);
+					}
+				}
+				else
+					printf("\nFCFS will follow the table above.");
 				break;
             case 3:
                 system("cls");
@@ -70,9 +90,13 @@ int main()
 			case 6:
 				system("cls");
                 displayTAT();
-                printf("\nAWT: %.2f", ATT());
+                printf("\nATT: %.2f", ATT());
 				break;
 			case 7:
+				system("cls");
+                display();
+				break;
+			case 8:
 				printf("Thank you!\n");
 				return 0;
 			default:

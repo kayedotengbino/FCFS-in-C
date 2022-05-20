@@ -6,7 +6,14 @@ int rear = -1;
 int front = -1;
 int tat[10];	//turn-around time
 int wt[10];	//waiting time
+int p[10];	//process
 
+//for modified order
+int rearM = -1;  
+int frontM = -1;
+int sizeM = 10;
+
+//order based on burst time input
 int enqueue(int data)
 {
     if(front == -1)
@@ -17,8 +24,25 @@ int enqueue(int data)
     bt[rear] = data;
 }
 
+//order modified
+int fcfs(int data)
+{
+    if(frontM == -1)
+        frontM = 0;
+    
+    //rear += 1;
+    rearM = (rearM + 1) % sizeM;    // for circular queue
+    p[rearM] = data;
+}
+
+int clear()
+{
+	return front = -1, rear = -1;   
+}
+
 int isFull() 
 {
+
    if(rear == size - 1)
       return 1;
    else
@@ -30,8 +54,18 @@ void display()
     int x;
 
     printf("Process\tBurst Time\n");
-    for(x = front; x <= rear; x++)
-		printf("P%d\t%d\n", x+1, bt[x]);
+
+	//order based on burst time input
+	if(frontM == -1)
+	{
+		for(x = front; x <= rear; x++)
+	    	printf("P%d\t%d\n", x+1, bt[x]);
+	}
+	else
+	{
+		for(x = frontM; x <= rearM; x++)
+	    	printf("P%d\t%d\n", p[x], bt[x]);
+	}	
 }
 
 void displayTAT()
@@ -40,7 +74,15 @@ void displayTAT()
 
     printf("Process\tBurst Time\tTurn-around Time\n");
     for(x = front; x <= rear; x++)
-		printf("P%d\t%d\t\t%d\n", x+1, bt[x], tat[x]);
+	{
+		//order based on burst time input
+    	if(p[x] == '\0')
+    		printf("P%d\t%d\t\t%d\n", x+1, bt[x], tat[x]);
+    	
+    	//order modified
+    	else 
+    		printf("P%d\t%d\t\t%d\n", p[x], bt[x], tat[x]);
+	}
 }
 
 int TAT()
@@ -70,7 +112,15 @@ void displayWT()
 
     printf("Process\tBurst Time\tWaiting Time\n");
     for(x = front; x <= rear; x++)
-		printf("P%d\t%d\t\t%d\n", x+1, bt[x], wt[x]);
+	{
+		//order based on burst time input
+    	if(p[x] == '\0')
+    		printf("P%d\t%d\t\t%d\n", x+1, bt[x], wt[x]);
+    	
+    	//order modified
+    	else 
+    		printf("P%d\t%d\t\t%d\n", p[x], bt[x], wt[x]);
+	}
 }
 
 float AWT()
